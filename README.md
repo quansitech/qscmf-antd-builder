@@ -8,8 +8,8 @@ composer require quansitech/qscmf-antd-builder
 ```
 
 ## 控件列表
-[Divider](https://github.com/quansitech/qscmf-antd-builder)
-[Table](https://github.com/quansitech/qscmf-antd-builder)
++ [Divider](https://github.com/quansitech/qscmf-antd-builder#divider)
++ [Table](https://github.com/quansitech/qscmf-antd-builder#table)
 
 ### Divider
 分割线
