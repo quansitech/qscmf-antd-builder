@@ -1,0 +1,29 @@
+{
+    "name": "quansitech/qscmf-antd-builder",
+    "description": "antd qscmf builder",
+    "type": "library",
+    "keywords": ["qscmf", "component", "antd"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tiderjian",
+            "email": "tider_yatsen@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "tiderjian/think-core": ">=11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AntdBuilder\\": "src/"
+        }
+    },
+    "extra": {
+        "qscmf": {
+            "providers": [
+                "AntdBuilder\\AntdBuilderProvider"
+            ]
+        }
+    }
+}
