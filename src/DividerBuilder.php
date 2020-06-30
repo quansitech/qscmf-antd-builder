@@ -7,6 +7,7 @@ use Think\View;
 class DividerBuilder implements ConvertHtml{
 
     protected $title = '';
+    protected $html = '';
 
     public function setTitle($title){
         $this->title = $title;
@@ -14,9 +15,10 @@ class DividerBuilder implements ConvertHtml{
     }
 
     public function __toString(){
-        $id = Str::uuid();
+        if(!$this->html){
+            $id = Str::uuid();
 
-        $template = <<<template
+            $template = <<<template
 <div id="{$id}">
 {$this->title}
 </div>
@@ -28,8 +30,9 @@ class DividerBuilder implements ConvertHtml{
 QscmfAntd.divider(document.getElementById('{$id}'), {});
 </script>
 template;
+            $this->html = (string)((new View())->fetch('', $template));
+        }
 
-
-        return (string)((new View())->fetch('', $template));
+        return $this->html;
     }
 }

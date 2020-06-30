@@ -8,6 +8,7 @@ class TableBuilder implements ConvertHtml{
 
     protected $columns = [];
     protected $data = [];
+    protected $html = '';
 
     public function addColumn($column){
         array_push($this->columns, $column);
@@ -29,9 +30,10 @@ class TableBuilder implements ConvertHtml{
 
     public function __toString()
     {
-        $id = Str::uuid();
+        if(!$this->html){
+            $id = Str::uuid();
 
-        $template = <<<template
+            $template = <<<template
 <div id="{$id}"></div>
 <notdefined name="qa-builder-table">
     <script src="/Public/qa-builder/qa-builder-table.js"></script>
@@ -41,7 +43,10 @@ class TableBuilder implements ConvertHtml{
 QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()});
 </script>
 template;
+            $this->html = (string)((new View())->fetch('', $template));
+        }
 
-        return (string)((new View())->fetch('', $template));
+
+        return $this->html;
     }
 }
