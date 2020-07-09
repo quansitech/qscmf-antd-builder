@@ -30,7 +30,7 @@ class DividerBuilder implements ConvertHtml{
 {$this->title}
 </div>
 <notdefined name="qa-builder-divider">
-    <script src="/Public/qa-builder/qa-builder-divider.js"></script>
+    <script src="{:asset('qa-builder/qa-builder-divider.js')}"></script>
     <define name="qa-builder-divider" value="1" />
 </notdefined>
 <script>

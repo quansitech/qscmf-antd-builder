@@ -36,7 +36,7 @@ class TableBuilder implements ConvertHtml{
             $template = <<<template
 <div id="{$id}"></div>
 <notdefined name="qa-builder-table">
-    <script src="/Public/qa-builder/qa-builder-table.js"></script>
+    <script src="{:asset('qa-builder/qa-builder-table.js')}"></script>
     <define name="qa-builder-table" value="1" />
 </notdefined>
 <script>
