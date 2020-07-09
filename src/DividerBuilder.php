@@ -9,9 +9,11 @@ class DividerBuilder implements ConvertHtml{
     protected $title = '';
     protected $html = '';
 
-    public function __construct($title)
+    public function __construct($title = '')
     {
-        $this->setTitle($title);
+        if ($title){
+            $this->setTitle($title);
+        }
     }
 
     public function setTitle($title){
