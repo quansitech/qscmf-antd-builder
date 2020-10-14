@@ -6,7 +6,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
     entry: {
         divider: './src/divider.js',
-        table: './src/table.js'
+        table: './src/table.js',
+        collapse: './src/collapse.js'
     },
     output: {
         filename: 'qa-builder-[name].js',

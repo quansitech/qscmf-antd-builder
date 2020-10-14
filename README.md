@@ -47,6 +47,16 @@ $table_builder->addRow(['key' => 3, 'name' => 'Joe Black', 'age' => 32, 'address
 echo $table_builder; //输出html
 ```
 
+### Collapse
+折叠卡
+
+最简单的折叠卡
+```php
+$collapse = new CollapseBuilder();
+$collapse->addPanel('这是个标题1', '<p>这里可以写html</p>');
+$collapse->addPanel('这是个标题2', '<p>这里可以写html</p>');
+echo $collapse; //输出html
+```
 
 
 

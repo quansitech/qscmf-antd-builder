@@ -8,6 +8,7 @@
             hello
         </div>
         <div id="table"></div>
+        <div id="collapse"></div>
         <script>
 
                 QscmfAntd.divider(document.getElementById('root'), {});
@@ -50,6 +51,32 @@
 
                 };
                 QscmfAntd.table(document.getElementById('table'), opt);
+
+
+                var text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`;
+                var collapseOpt = {
+                    panels : [
+                        {
+                            header: 'This is panel header 1',
+                            content: "<p>" + text + "</p>"
+                        },
+                        {
+                            header: 'This is panel header 2',
+                            content: "<p>" + text + "</p>"
+                        },
+                        {
+                            header: 'This is panel header 3',
+                            content: "<p>" + text + "</p>"
+                        }
+                    ]
+                };
+
+                QscmfAntd.collapse(document.getElementById('collapse'), collapseOpt);
+
         </script>
     </body>
 </html>
