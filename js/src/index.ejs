@@ -9,6 +9,8 @@
         </div>
         <div id="table"></div>
         <div id="collapse"></div>
+        <div id="divider_list">带有排序和筛选的Table</div>
+        <div id="table_with_sort_and_filter"></div>
         <script>
 
                 QscmfAntd.divider(document.getElementById('root'), {});
@@ -76,6 +78,102 @@
                 };
 
                 QscmfAntd.collapse(document.getElementById('collapse'), collapseOpt);
+
+                QscmfAntd.divider(document.getElementById('divider_list'), {});
+
+                let tableFilterOpt = {
+                    columns: [
+                        {
+                            title: 'Name',
+                            dataIndex: 'name',
+                            key:'name',
+                        },
+                        {
+                            title: 'Age',
+                            dataIndex: 'age',
+                            key:'age',
+                        },
+                        {
+                            title: 'Status',
+                            dataIndex: 'status',
+                        },
+                        {
+                            title: 'Address',
+                            dataIndex: 'address',
+                            key:'address',
+                        },
+                        {
+                            title: 'cus_sorted',
+                            dataIndex: 'cus_sorted',
+                            key:'cus_sorted',
+
+                        },
+                        {
+                            title: 'self_sorted',
+                            dataIndex: 'self_sorted',
+                            key:'self_sorted',
+                        },
+                        {
+                            title: 'date',
+                            dataIndex: 'date',
+                            key:'date',
+                        },
+                        {
+                            title: 'date_range',
+                            dataIndex: 'date_range',
+                            key:'date_range',
+                        },
+                    ],
+
+                };
+
+                function mockData(){
+                    let color = ['R','G','B'];
+                    let mock_data = [];
+                    for(let i=0; i < 50 ;i++){
+                        const temp = {
+                            key: i,
+                            name: 'name_'+i,
+                            age: Math.floor(Math.random()*100),
+                            status: Math.round(Math.random()),
+                            address: 'address_'+i,
+                            cus_sorted: color[Math.floor(Math.random()*color.length)],
+                            self_sorted: color[Math.floor(Math.random()*color.length)],
+                            date: Math.floor(Math.random() * (2023 - 1990 + 1) + 1990),
+                            date_range: Math.floor(Math.random() * (2023 - 1990 + 1) + 1990) +" - "+Math.floor(Math.random() * (2023 - 1990 + 1) + 1990),
+                        };
+                        mock_data.push(temp);
+                    }
+
+                    return mock_data;
+                }
+
+                function genFilter(){
+                    return [
+                        {"key": "exact_name","name": "name", "text":"精准搜索","type":"input", "rule":"exact", "showLabel":"1"},
+                        {"key": "wildcard_name","name": "name", "text":"模糊搜索","type":"input", "rule":"wildcard", "showLabel":"1"},
+                        {"key": "self_name","name": "name", "text":"自定义文本搜索","type":"input", "rule":"callback","options":{"callback":"return value===searchData;"}, "showLabel":"1"},
+                        {"key": "select_status","name": "status", "text":"下拉框单选","type":"select", "rule":"exact","options":{"options":[{"label":"否","value":0},{"label":"是","value":1}],"showSearch":"1"},"changeThenSearch":"1"},
+                        {"key": "date","name": "date", "text":"日期筛选","type":"date", "rule":"egt","options":{"picker":"year"}, "showLabel":"1"},
+                        {"key": "date_range","name": "date", "text":"日期范围筛选","type":"date_range", "rule":"between","options":{"picker":"year","valueSeparator":" - "}, "showLabel":"1"},
+                        {"key": "self_filter","name": "date_range", "text":"自定义日期搜索","type":"date", "rule":"callback","options":{"picker":"year","valueSeparator":" - ","callback":"if (searchData !== \"\"){const [min, max] = value.split(' - ');  return min <= searchData && searchData <= max;}"}, "showLabel":"1"},
+                        {"key": "multi_select_status","name": "status", "text":"下拉框多选","type":"multi_select", "rule":"in","options":{"options":[{"label":"否","value":0},{"label":"是","value":1}]},"changeThenSearch":"1"},
+                    ];
+                }
+
+                function genSorter(){
+                    return [
+                        {"name":"age"},
+                        {"name":"cus_sorted", "type":"custom", "options":{"options":["B","R","G"]}},
+                        {"name":"self_sorted", "type":"callback", "options":{"callback":"let color_sort=['R','G','B'];let a = color_sort.indexOf(rowA.self_sorted);let b = color_sort.indexOf(rowB.self_sorted);return a - b;"}},
+                    ];
+                }
+
+                tableFilterOpt.data = mockData();
+                let filter = genFilter();
+                let sorter = genSorter();
+                let id = 'table_with_sort_and_filter';
+                QscmfAntd.table(document.getElementById(id), tableFilterOpt, id, filter, sorter);
 
         </script>
     </body>
