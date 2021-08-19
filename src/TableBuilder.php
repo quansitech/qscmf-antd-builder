@@ -102,14 +102,14 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addMultiSelectFilter($name, $text, $options, $key = '', $showLabel = false, $showSearch = false, $width = null){
+    public function addMultiSelectFilter($name, $text, $options, $key = '', $showLabel = false, $width = null){
         return $this->addFilter([
             'key' => $key,
             'name' => $name,
             'text'=>$text,
             'type' => self::FILTER_TYPE_MULTI_SELECT,
             'rule' => self::FILTER_RULE_IN,
-            'options' => ['options' => $options, 'showSearch' => $showSearch, "width" => $width],
+            'options' => ['options' => $options, "width" => $width],
             'showLabel' => $showLabel
         ]);
     }

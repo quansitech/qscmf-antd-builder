@@ -169,10 +169,22 @@ foreach ($list_data as &$v){
 
 + 文本模糊搜索
   ```php
+  // 参数说明
+  // $name
+  // $text
+  // $key  默认为''
+  // $showLabel 默认为 false
+  
   $table_builder->addFuzzyFilter('name', '模糊搜索');
   ```
 + 文本精准搜索
   ```php
+  // 参数说明
+  // $name
+  // $text
+  // $key  默认为''
+  // $showLabel 默认为 false
+  
   $table_builder->addExactFilter('name', '精准搜索', 'exact_name');
   ```
 + 下拉框单选
@@ -180,6 +192,16 @@ foreach ($list_data as &$v){
   $status_list = array_map(function($value){
     return ['value' => $value, 'label' => $value];
     },[0,1]);
+  
+  // 参数说明
+  // $name
+  // $text
+  // $options
+  // $key 默认为 ''
+  // $showLabel 默认为 false
+  // $showSearch 默认为 false
+  // $width 默认为 null
+  
   $table_builder->addSelectFilter('status', '状态', $status_list);
   ```
 + 下拉框多选
@@ -187,22 +209,61 @@ foreach ($list_data as &$v){
   $status_list = array_map(function($value){
     return ['value' => $value, 'label' => $value];
     },[0,1]);
+  
+  // 参数说明
+  // $name
+  // $text
+  // $options
+  // $key 默认为 ''
+  // $showLabel 默认为 false
+  // $width 默认为 null
+  
   $table_builder->addMultiSelectFilter('status', '状态多选', $status_list, 'multi_status');
   ```
 + 日期筛选
   ```php
+  
+  // 参数说明
+  // $name
+  // $text
+  // $rule
+  // $picker 默认为 'date'
+  // $format 默认为 ''
+  // $key 默认为 ''
+  // $showLabel 默认为 false
+
   $table_builder->addDateFilter('date', '年份', TableBuilder::FILTER_RULE_LT, 'year');
   ```
 + 日期范围筛选
   ```php
+  // $name
+  // $text
+  // $rule
+  // $picker 默认为 'date'
+  // $format 默认为 ''
+  // $key 默认为 ''
+  // $showLabel 默认为 false
+  
   $table_builder->addDateRangeFilter('date','年份范围', TableBuilder::FILTER_RULE_BETWEEN, 'year', null, 'date_range');
   ```
 + 自定义类型与使用回调筛选规则
   ```php
+  
+  // 参数说明
+  // $name
+  // $text
+  // $type
+  // $callback
+  // $key 默认为 ''
+  // $showLabel 默认为 false
+
   $table_builder->addSelfFilter('name','自定义精准搜索', TableBuilder::FILTER_TYPE_INPUT, 'return value === searchData;', 'self_name');
   ```
 + 自定义类型与筛选规则
   ```php
+  
+  // 请看通用参数以及对应类型参数说明使用
+  
   $table_builder->addFilter(['name' => 'nick_name', 'text'=>'自定义模糊搜索', 'type' => TableBuilder::FILTER_TYPE_INPUT, 'rule' => TableBuilder::FILTER_RULE_WILDCARD, 'changeThenSearch' => false]);
   ```
 
