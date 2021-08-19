@@ -287,6 +287,9 @@ foreach ($list_data as &$v){
 
 + 默认排序，即数字的升序或者降序排序
   ```php
+  // 参数说明
+  // $name
+  
   $table_builder->addDefSorter(['name' =>'num']);
   ```
 + 自定义排序项：custom
@@ -294,6 +297,10 @@ foreach ($list_data as &$v){
   例如有一个数组为["R","G","B"]，列表对应值为其中一个元素的值，想要实现排序的效果为["G","R","B"]，可以使用此类型实现，实现方法请看示例
   ```
   ```php
+  // 参数说明
+  // $name
+  // $options
+  
   $table_builder->addCustomSorter('status', [1,0]);
   ```
 + 使用回调函数自定义规则
@@ -303,6 +310,10 @@ foreach ($list_data as &$v){
   例如： return rowA.num-rowB.num;
   ```
   ```php
+  // 参数说明
+  // $name
+  // $callback
+  
   $table_builder->addSelfSorter('color', "return rowA.color-rowB.color;");
   ```
 
