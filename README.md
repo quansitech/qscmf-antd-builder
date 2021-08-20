@@ -47,7 +47,7 @@ $table_builder->addRow(['key' => 3, 'name' => 'Joe Black', 'age' => 32, 'address
 echo $table_builder; //输出html
 ```
 
-带有筛选条件的表格
+**带有筛选条件的表格**
 
 ```php
 // 创建表格及添加数据
@@ -88,9 +88,9 @@ foreach ($list_data as &$v){
 }
 ```
 
-```text
+
 筛选通用参数说明
-```
+
 
 | 参数 | 说明 | 类型 | 默认值 |
 |:---------- |:----------|:----------|:----------|
@@ -103,9 +103,9 @@ foreach ($list_data as &$v){
 | showLabel | 是否在左侧显示筛选项标题，若需要应该设置为 "1" |  boolean I string | false |
 | options | 筛选项额外配置，具体请看类型说明；使用自定义筛选规则时应设置callback，具体请看类型说明中的 使用回调自定义规则 | array |  |
 
-```text
+
 筛选类型及其options参数说明
-```
+
 
 + 文本框：TableBuilder::FILTER_TYPE_INPUT
 + 下拉框单选：TableBuilder::FILTER_TYPE_SELECT
@@ -139,9 +139,9 @@ foreach ($list_data as &$v){
   | showTime | 增加时间选择功能 | boolean | false |
   | valueSeparator | 值分隔符 | string | - |
 
-```text
+
 筛选规则说明
-```
+
 
 + 模糊搜索字符串：wildcard
 + 精准搜索字符串：exact
@@ -163,9 +163,9 @@ foreach ($list_data as &$v){
   | record | 一行的值 |
   | searchData | 搜索内容 | 
 
-```text
+
 使用说明
-```
+
 
 + 文本模糊搜索
   ```php
@@ -268,11 +268,9 @@ foreach ($list_data as &$v){
   ```
 
 
-带有排序的表格
+**带有排序的表格**
 
-```text
 排序参数说明
-```
 
 | 参数 | 说明 | 类型 | 默认值 |
 |:---------- |:----------|:----------|:----------|
@@ -281,9 +279,8 @@ foreach ($list_data as &$v){
 | options | 排序项额外配置，使用自定义排序规则时应设置callback，具体请看排序类型及其使用说明中的 使用回调函数自定义规则 | array |  |
 
 
-```text
 排序类型及其使用说明
-```
+
 
 + 默认排序，即数字的升序或者降序排序：null
   ```php
