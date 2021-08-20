@@ -277,7 +277,7 @@ foreach ($list_data as &$v){
 | 参数 | 说明 | 类型 | 默认值 |
 |:---------- |:----------|:----------|:----------|
 | name | 即data.dataIndex | string |  |
-| type | 排序类型，可选值请看 排序类型及其使用说明 | string I null |  |
+| type | 排序类型，可选值请看 排序类型及其使用说明 | string I null | null |
 | options | 排序项额外配置，使用自定义排序规则时应设置callback，具体请看排序类型及其使用说明中的 使用回调函数自定义规则 | array |  |
 
 
@@ -285,25 +285,14 @@ foreach ($list_data as &$v){
 排序类型及其使用说明
 ```
 
-+ 默认排序，即数字的升序或者降序排序
++ 默认排序，即数字的升序或者降序排序：null
   ```php
   // 参数说明
   // $name
   
   $table_builder->addDefSorter(['name' =>'num']);
   ```
-+ 自定义排序项：custom
-  ```text
-  例如有一个数组为["R","G","B"]，列表对应值为其中一个元素的值，想要实现排序的效果为["G","R","B"]，可以使用此类型实现，实现方法请看示例
-  ```
-  ```php
-  // 参数说明
-  // $name
-  // $options
-  
-  $table_builder->addCustomSorter('status', [1,0]);
-  ```
-+ 使用回调函数自定义规则
++ 使用回调函数自定义规则：callback
   ```text
   需要配置options参数，添加callback的值
   callback只需要定义 js function 的 body，默认接收的参数是：rowA rowB，为比较的两个行数据。

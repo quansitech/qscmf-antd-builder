@@ -20,13 +20,6 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
                 sorter.forEach(sorter_item => {
                     if(sorter_item.name === item.dataIndex){
                         switch (sorter_item.type){
-                            case 'custom':
-                                item.sorter =  (a,b)=>{
-                                    let rowA = sorter_item.options.options.indexOf(a[sorter_item.name]);
-                                    let rowB = sorter_item.options.options.indexOf(b[sorter_item.name]);
-                                    return rowA - rowB;
-                                };
-                                break;
                             case 'callback':
                                 const selfFun = new Function('rowA', 'rowB', sorter_item.options.callback)
                                 item.sorter = selfFun;

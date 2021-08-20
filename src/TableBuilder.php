@@ -177,14 +177,6 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addCustomSorter($name, $options){
-        return $this->addSorter([
-            'name' => $name,
-            'type' => 'custom',
-            'options' => ['options' => $options]
-        ]);
-    }
-
     public function addSorter($sorter){
         array_push($this->sorter, $sorter);
         return $this;
