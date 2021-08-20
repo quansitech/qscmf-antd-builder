@@ -66,9 +66,8 @@ class TableBuilder implements ConvertHtml{
         return json_encode($opt, JSON_PRETTY_PRINT);
     }
 
-    public function addFuzzyFilter($name, $text, $key = '', $showLabel = false){
+    public function addFuzzyFilter($name, $text, $showLabel = false){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text' => $text,
             'type' => self::FILTER_TYPE_INPUT,
@@ -78,9 +77,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addExactFilter($name, $text, $key = '', $showLabel = false){
+    public function addExactFilter($name, $text, $showLabel = false){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text'=>$text,
             'type' => self::FILTER_TYPE_INPUT,
@@ -90,9 +88,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addSelectFilter($name, $text, $options, $key = '', $showLabel = false, $showSearch = false, $width = null){
+    public function addSelectFilter($name, $text, $options, $showLabel = false, $showSearch = false, $width = null){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text' => $text,
             'type' => self::FILTER_TYPE_SELECT,
@@ -102,9 +99,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addMultiSelectFilter($name, $text, $options, $key = '', $showLabel = false, $width = null){
+    public function addMultiSelectFilter($name, $text, $options, $showLabel = false, $width = null){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text'=>$text,
             'type' => self::FILTER_TYPE_MULTI_SELECT,
@@ -114,9 +110,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addDateFilter($name, $text, $rule, $picker = 'date',$format = '', $key = '', $showLabel = false){
+    public function addDateFilter($name, $text, $rule, $picker = 'date',$format = '', $showLabel = false){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text' => $text,
             'type' => self::FILTER_TYPE_DATE,
@@ -128,9 +123,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addDateRangeFilter($name, $text, $rule, $picker = 'date',$format = '', $key = '', $showLabel = false){
+    public function addDateRangeFilter($name, $text, $rule, $picker = 'date',$format = '', $showLabel = false){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text' => $text,
             'type' => self::FILTER_TYPE_DATE_RANGE,
@@ -141,9 +135,8 @@ class TableBuilder implements ConvertHtml{
         ]);
     }
 
-    public function addSelfFilter($name, $text, $type, $callback, $key = '', $showLabel = false){
+    public function addSelfFilter($name, $text, $type, $callback, $showLabel = false){
         return $this->addFilter([
-            'key' => $key,
             'name' => $name,
             'text' => $text,
             'type' => $type,
@@ -154,7 +147,6 @@ class TableBuilder implements ConvertHtml{
     }
 
     public function addFilter($filter){
-        $filter['key'] = $filter['key']?:$filter['name'];
         $filter['changeThenSearch'] = $filter['changeThenSearch'] === false ?:'1';
         $filter['showLabel'] = $filter['showLabel'] === false ?:'1';
 
@@ -202,6 +194,27 @@ class TableBuilder implements ConvertHtml{
         return true;
     }
 
+    protected function formatFilterKey(){
+        $name = [];
+        $this->filter = collect($this->filter)->map(function ($item) use(&$name){
+            if (in_array($item['name'], $name)){
+                $key = $item['name'].'_'.Str::uuid()->toString();
+            }else{
+                $name[] = $item['name'];
+                $key = $item['name'];
+            }
+            $item['key'] = $key;
+
+            return $item;
+        })->all();
+    }
+
+    protected function jsonEncodeFilter(){
+        $this->formatFilterKey();
+
+        return $this->jsonEncode($this->filter);
+    }
+
     public function __toString()
     {
         if(!$this->html){
@@ -214,7 +227,7 @@ class TableBuilder implements ConvertHtml{
     <define name="qa-builder-table" value="1" />
 </notdefined>
 <script>
-QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncode($this->filter)}, {$this->jsonEncode($this->sorter)});
+QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncodeFilter($this->filter)}, {$this->jsonEncode($this->sorter)});
 </script>
 template;
             $this->html = (string)((new View())->fetch('', $template));

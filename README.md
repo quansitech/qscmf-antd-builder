@@ -94,8 +94,7 @@ foreach ($list_data as &$v){
 
 | 参数 | 说明 | 类型 | 默认值 |
 |:---------- |:----------|:----------|:----------|
-| key | 筛选的标识值，必须唯一，若为空则为name的值；当同一个name拥有多个筛选项时，应设置不同的key | string |  |
-| name | 即data.dataIndex | string |  |
+| name | 列属性值，即data.dataIndex | string |  |
 | text | 筛选项标题 | string |  |
 | type | 筛选类型，可选值请看 筛选类型及其options参数说明 | string |  |
 | rule | 筛选规则，可选值请看 筛选规则说明 | string |  |
@@ -155,6 +154,8 @@ foreach ($list_data as &$v){
   ```text
   需要配置options参数，添加callback的值
   callback只需要定义 js function 的 body，默认接收的参数是：value record searchData
+  function 返回的结果应为 true/false，返回false则表示需要过滤该条数据。
+  
   例如需要精准匹配列表值与搜索字符串： return value === searchData;
   ```
   | 参数 | 说明 |
@@ -172,7 +173,6 @@ foreach ($list_data as &$v){
   // 参数说明
   // $name
   // $text
-  // $key  默认为''
   // $showLabel 默认为 false
   
   $table_builder->addFuzzyFilter('name', '模糊搜索');
@@ -182,10 +182,9 @@ foreach ($list_data as &$v){
   // 参数说明
   // $name
   // $text
-  // $key  默认为''
   // $showLabel 默认为 false
   
-  $table_builder->addExactFilter('name', '精准搜索', 'exact_name');
+  $table_builder->addExactFilter('name', '精准搜索');
   ```
 + 下拉框单选
   ```php
@@ -197,7 +196,6 @@ foreach ($list_data as &$v){
   // $name
   // $text
   // $options
-  // $key 默认为 ''
   // $showLabel 默认为 false
   // $showSearch 默认为 false
   // $width 默认为 null
@@ -214,11 +212,10 @@ foreach ($list_data as &$v){
   // $name
   // $text
   // $options
-  // $key 默认为 ''
   // $showLabel 默认为 false
   // $width 默认为 null
   
-  $table_builder->addMultiSelectFilter('status', '状态多选', $status_list, 'multi_status');
+  $table_builder->addMultiSelectFilter('status', '状态多选', $status_list);
   ```
 + 日期筛选
   ```php
@@ -229,7 +226,6 @@ foreach ($list_data as &$v){
   // $rule
   // $picker 默认为 'date'
   // $format 默认为 ''
-  // $key 默认为 ''
   // $showLabel 默认为 false
 
   $table_builder->addDateFilter('date', '年份', TableBuilder::FILTER_RULE_LT, 'year');
@@ -241,10 +237,9 @@ foreach ($list_data as &$v){
   // $rule
   // $picker 默认为 'date'
   // $format 默认为 ''
-  // $key 默认为 ''
   // $showLabel 默认为 false
   
-  $table_builder->addDateRangeFilter('date','年份范围', TableBuilder::FILTER_RULE_BETWEEN, 'year', null, 'date_range');
+  $table_builder->addDateRangeFilter('date','年份范围', TableBuilder::FILTER_RULE_BETWEEN, 'year');
   ```
 + 自定义类型与使用回调筛选规则
   ```php
@@ -254,10 +249,9 @@ foreach ($list_data as &$v){
   // $text
   // $type
   // $callback
-  // $key 默认为 ''
   // $showLabel 默认为 false
 
-  $table_builder->addSelfFilter('name','自定义精准搜索', TableBuilder::FILTER_TYPE_INPUT, 'return value === searchData;', 'self_name');
+  $table_builder->addSelfFilter('name','自定义精准搜索', TableBuilder::FILTER_TYPE_INPUT, 'return value === searchData;');
   ```
 + 自定义类型与筛选规则
   ```php
@@ -293,6 +287,8 @@ foreach ($list_data as &$v){
   ```text
   需要配置options参数，添加callback的值
   callback只需要定义 js function 的 body，默认接收的参数是：rowA rowB，为比较的两个行数据。
+  function 返回的结果应该是一个小于、等于或大于0的整数，当小于0时，rowA在rowB前；当大于0时rowB在rowA前；当等于0时rowA与rowB相等。
+  
   例如： return rowA.num-rowB.num;
   ```
   ```php

@@ -46,10 +46,6 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
         showQuickJumper: true
     };
 
-    const handleChange = (pagination, filters, sorter)=>{
-        console.log(pagination, filters, sorter);
-    }
-
     const filterPerRecord = (value, record, filterOpt, searchData)=>{
         let flag = true ;
         switch (filterOpt.rule){
@@ -129,7 +125,7 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
 
     return <>
             { filter && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
-            <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination}  onChange={handleChange} />
+            <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination} />
         </>
 }
 
