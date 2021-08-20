@@ -99,8 +99,8 @@ foreach ($list_data as &$v){
 | text | 筛选项标题 | string |  |
 | type | 筛选类型，可选值请看 筛选类型及其options参数说明 | string |  |
 | rule | 筛选规则，可选值请看 筛选规则说明 | string |  |
-| changeThenSearch | 筛选内容改变时马上筛选数据，例如选择下拉框值即筛选数据，若需要应该设置为 "1" | bool I string | false |
-| showLabel | 是否在左侧显示筛选项标题，若需要应该设置为 "1" |  bool I string | false |
+| changeThenSearch | 筛选内容改变时马上筛选数据，例如选择下拉框值即筛选数据，若需要应该设置为 "1" | boolean I string | false |
+| showLabel | 是否在左侧显示筛选项标题，若需要应该设置为 "1" |  boolean I string | false |
 | options | 筛选项额外配置，具体请看类型说明；使用自定义筛选规则时应设置callback，具体请看类型说明中的 使用回调自定义规则 | array |  |
 
 ```text
@@ -113,7 +113,7 @@ foreach ($list_data as &$v){
   | 参数 | 说明 | 类型 | 默认值 |
   |:---------- |:----------|:----------|:----------|
   | options | 选项，格式为[["value"=>"value", "label"=>"label"]] | array |  |
-  | showSearch | 支持文本搜索选项，若需要应该设置为 "1" | bool I string | false |
+  | showSearch | 支持文本搜索选项，若需要应该设置为 "1" | boolean I string | false |
   | width | 宽度 | string | 100px |
 
 + 下拉框多选：TableBuilder::FILTER_TYPE_MULTI_SELECT
