@@ -124,7 +124,7 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
     };
 
     return <>
-            { filter && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
+            { (filter && filter.length > 0) && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
             <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination} />
         </>
 }
