@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8"/>
         <title>React & Webpack</title>
-    <script type="text/javascript" src="qa-builder-vendor.js"></script><script type="text/javascript" src="qa-builder-divider.js"></script><script type="text/javascript" src="qa-builder-table.js"></script><script type="text/javascript" src="qa-builder-collapse.js"></script></head>
+    <script type="text/javascript" src="qa-builder-vendor.js"></script><script type="text/javascript" src="qa-builder-divider.js"></script><script type="text/javascript" src="qa-builder-table.js"></script><script type="text/javascript" src="qa-builder-collapse.js"></script><script type="text/javascript" src="qa-builder-descriptions.js"></script></head>
     <body>
         <div id="root">
             hello
@@ -11,6 +11,7 @@
         <div id="collapse"></div>
         <div id="divider_list">带有排序和筛选的Table</div>
         <div id="table_with_sort_and_filter"></div>
+        <div id="descriptions"></div>
         <script>
 
                 QscmfAntd.divider(document.getElementById('root'), {});
@@ -173,6 +174,42 @@
                 let sorter = genSorter();
                 let id = 'table_with_sort_and_filter';
                 QscmfAntd.table(document.getElementById(id), tableFilterOpt, id, filter, sorter);
+
+                var descriptionsOpt = {
+                                    title: 'userInfo',
+                                    bordered: true,
+                                    items: [
+                                        {
+                                            label:'Product',
+                                            content: 'Cloud Database'
+                                        },
+                                        {
+                                            label:'Config Info',
+                                            type: 'html',
+                                            content: `Data disk type: MongoDB
+                        <br />
+                        Database version: 3.4
+                        <br />
+                        Package: dds.mongo.mid
+                        <br />
+                        Storage space: 10 GB
+                        <br />
+                        Replication factor: 3
+                        <br />
+                        Region: East China 1`
+                                        },
+                                        {
+                                            label:'Config Info',
+                                            type: 'image',
+                                            content: [
+                                                'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?undefined',
+                                                'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?undefined'
+                                            ]
+                                        }
+                                    ]
+                                }
+
+                QscmfAntd.descriptions(document.getElementById('descriptions'), descriptionsOpt);
 
         </script>
     </body>

@@ -227,7 +227,7 @@ foreach ($list_data as &$v){
   // $picker 默认为 'date'
   // $format 默认为 ''
   // $showLabel 默认为 false
-
+  
   $table_builder->addDateFilter('date', '年份', TableBuilder::FILTER_RULE_LT, 'year');
   ```
 + 日期范围筛选
@@ -250,7 +250,7 @@ foreach ($list_data as &$v){
   // $type
   // $callback
   // $showLabel 默认为 false
-
+  
   $table_builder->addSelfFilter('name','自定义精准搜索', TableBuilder::FILTER_TYPE_INPUT, 'return value === searchData;');
   ```
 + 自定义类型与筛选规则
@@ -310,6 +310,44 @@ $collapse->addPanel('这是个标题2', '<p>这里可以写html</p>');
 echo $collapse; //输出html
 ```
 
+### Descriptions
+
+描述列表
+
+示例:
+
+```php
+$descriptions = new DescriptionsBuilder();
+$descriptions->setBordered(true);
+$descriptions->addItem('抬头', $title)
+    ->addItem('纳税人识别号', $tax_code, ['span' => 2])
+    ->addItem('图片', ['https://demo.test/demo.png', 'https://demo.test/demo.png'], ['type' => 'image'])
+    ->addItem('html', "123 <br /> 456", ['type' => 'html']);
+            
+echo $descriptions;
+```
 
 
+
+函数说明:
+
++ setBordered 
+
+  指定是否使用边框表格的展示方式
+
+  | 参数     | 说明                           | 必填 | 默认值 |
+  | :------- | :----------------------------- | ---- | :----- |
+  | bordered | 指定是否使用边框表格的展示方式 | 否   | false  |
+
++ addItem
+
+  添加展示列
+
+  | 参数        | 说明                                                         | 必填 | 默认值                       |
+  | :---------- | :----------------------------------------------------------- | ---- | :--------------------------- |
+  | label       | 列标题                                                       | 是   |                              |
+  | content     | 内容                                                         | 是   |                              |
+  | option      | 配置                                                         | 否   | [ 'type' => '', 'span' => 0] |
+  | option.type | 类型 <br />1. image 图片 content需要填写图片地址<br />    content也可以填入数组表示多图展示<br />2. html content可以输入简单的html进行信息展示 | 否   | text                         |
+  | option.span | 列宽 2表示占据两列，以此类推                                 | 否   | 0                            |
 
