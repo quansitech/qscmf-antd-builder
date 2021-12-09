@@ -3,9 +3,11 @@ import { Divider } from 'antd';
 import ReactDOM from "react-dom";
 
 function divider(obj, opt){
-    const defaultOpt = {};
+    const defaultOpt = {
+        orientation:'center'
+    };
     Object.assign(defaultOpt, opt);
-    ReactDOM.render(<Divider>{ obj.innerText }</Divider>, obj);
+    ReactDOM.render(<Divider  orientation={defaultOpt.orientation}>{ obj.innerText }</Divider>, obj);
 }
 
 window.QscmfAntd = window.QscmfAntd ? window.QscmfAntd : {};

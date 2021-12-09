@@ -28,6 +28,26 @@ $divider->setTitle('这是一个标题');
 echo $divider; //输出html
 ```
 
+修改分割线标题位置，默认为 center，即居中
+```php
+// 左边
+$divider = new DividerBuilder();
+$divider->setTitle('这是一个左标题');
+$divider->setOrientation('left');
+echo $divider;
+
+// 右边
+$divider = new DividerBuilder();
+$divider->setTitle('这是一个右标题');
+$divider->setOrientation('right');
+echo $divider;
+```
+
+实例化对象时设置标题和标题位置
+```php
+echo new DividerBuilder('标题', 'right');
+```
+
 ### Table
 表格
 

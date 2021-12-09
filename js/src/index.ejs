@@ -4,6 +4,12 @@
         <title>React & Webpack</title>
     </head>
     <body>
+        <div id="left-divider">
+            left
+        </div>
+        <div id="right-divider">
+            right
+        </div>
         <div id="root">
             hello
         </div>
@@ -15,6 +21,8 @@
         <script>
 
                 QscmfAntd.divider(document.getElementById('root'), {});
+                QscmfAntd.divider(document.getElementById('left-divider'), {orientation:'left'});
+                QscmfAntd.divider(document.getElementById('right-divider'), {orientation:'right'});
 
                 var opt = {
                     columns: [
