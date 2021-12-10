@@ -33,13 +33,13 @@ echo $divider; //输出html
 // 左边
 $divider = new DividerBuilder();
 $divider->setTitle('这是一个左标题');
-$divider->setOrientation('left');
+$divider->setTitlePosiition('left');
 echo $divider;
 
 // 右边
 $divider = new DividerBuilder();
 $divider->setTitle('这是一个右标题');
-$divider->setOrientation('right');
+$divider->setTitlePosiition('right');
 echo $divider;
 ```
 
