@@ -9,14 +9,14 @@ class DividerBuilder implements ConvertHtml{
     protected $title = '';
     protected $html = '';
     protected $def_orientation = 'center';
-    protected $orientation;
+    protected $title_position;
 
-    public function __construct($title = '', $orientation = null)
+    public function __construct($title = '', $title_position = null)
     {
         if ($title){
             $this->setTitle($title);
         }
-        $orientation && $this->setOrientation($orientation);
+        $title_position && $this->setTitlePosiition($title_position);
     }
 
     public function setTitle($title){
@@ -26,18 +26,18 @@ class DividerBuilder implements ConvertHtml{
 
     protected function genOpt(){
         $opt = [
-            'orientation' => $this->checkOrientation($this->orientation) ? $this->orientation : $this->def_orientation,
+            'orientation' => $this->checkTitlePosition($this->title_position) ? $this->title_position : $this->def_orientation,
         ];
         return json_encode($opt, JSON_PRETTY_PRINT);
     }
 
-    public function setOrientation($orientation){
-        $this->orientation = $orientation;
+    public function setTitlePosiition($position){
+        $this->title_position = $position;
         return $this;
     }
 
-    protected function checkOrientation($orientation){
-        return in_array($orientation, ['left','right', 'center']);
+    protected function checkTitlePosition($position){
+        return in_array($position, ['left','right', 'center']);
     }
 
     public function __toString(){
