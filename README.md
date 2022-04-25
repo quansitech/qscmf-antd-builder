@@ -301,7 +301,7 @@ foreach ($list_data as &$v){
   // 参数说明
   // $name
   
-  $table_builder->addDefSorter(['name' =>'num']);
+  $table_builder->addDefSorter('num');
   ```
 + 使用回调函数自定义规则：callback
   ```text
