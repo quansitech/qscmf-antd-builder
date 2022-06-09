@@ -47,6 +47,7 @@ class TableBuilder implements ConvertHtml{
     protected $filter = [];
     protected $sorter = [];
     protected $html = '';
+    protected $api_url = '';
 
     public function addColumn($column){
         array_push($this->columns, $column);
@@ -111,6 +112,7 @@ class TableBuilder implements ConvertHtml{
     }
 
     public function addDateFilter($name, $text, $rule, $picker = 'date',$format = '', $showLabel = false){
+        $this->api_url && $rule = self::FILTER_RULE_CALLBACK;
         return $this->addFilter([
             'name' => $name,
             'text' => $text,
@@ -124,6 +126,7 @@ class TableBuilder implements ConvertHtml{
     }
 
     public function addDateRangeFilter($name, $text, $rule, $picker = 'date',$format = '', $showLabel = false){
+        $this->api_url && $rule = self::FILTER_RULE_CALLBACK;
         return $this->addFilter([
             'name' => $name,
             'text' => $text,
@@ -140,7 +143,7 @@ class TableBuilder implements ConvertHtml{
             'name' => $name,
             'text' => $text,
             'type' => $type,
-            'rule' => 'callback',
+            'rule' => self::FILTER_RULE_CALLBACK,
             'options' => ['callback' => $callback],
             'showLabel' => $showLabel
         ]);
@@ -179,7 +182,9 @@ class TableBuilder implements ConvertHtml{
     }
 
     protected function validateDateRule($rule){
-        return in_array(strtolower($rule), [self::FILTER_RULE_LT, self::FILTER_RULE_ELT, self::FILTER_RULE_GT, self::FILTER_RULE_EGT, self::FILTER_RULE_BETWEEN]);
+        $valid_rule =  [self::FILTER_RULE_LT, self::FILTER_RULE_ELT, self::FILTER_RULE_GT, self::FILTER_RULE_EGT, self::FILTER_RULE_BETWEEN];
+        $this->api_url && $valid_rule[] = self::FILTER_RULE_CALLBACK;
+        return in_array(strtolower($rule), $valid_rule);
     }
 
     protected function validateFilter($type, $rule){
@@ -215,6 +220,11 @@ class TableBuilder implements ConvertHtml{
         return $this->jsonEncode($this->filter);
     }
 
+    public function setApiUrl($api_url){
+        $this->api_url = $api_url;
+        return $this;
+    }
+
     public function __toString()
     {
         if(!$this->html){
@@ -227,7 +237,7 @@ class TableBuilder implements ConvertHtml{
     <define name="qa-builder-table" value="1" />
 </notdefined>
 <script>
-QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncodeFilter($this->filter)}, {$this->jsonEncode($this->sorter)});
+QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncodeFilter($this->filter)}, {$this->jsonEncode($this->sorter)}, '{$this->api_url}');
 </script>
 template;
             $this->html = (string)((new View())->fetch('', $template));
