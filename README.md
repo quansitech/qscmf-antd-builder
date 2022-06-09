@@ -301,7 +301,7 @@ foreach ($list_data as &$v){
   // 参数说明
   // $name
   
-  $table_builder->addDefSorter(['name' =>'num']);
+  $table_builder->addDefSorter('num');
   ```
 + 使用回调函数自定义规则：callback
   ```text
@@ -318,6 +318,64 @@ foreach ($list_data as &$v){
   
   $table_builder->addSelfSorter('color', "return rowA.color-rowB.color;");
   ```
+
+**使用远程加载数据的表格**
+
++ 使用setApiUrl设置接口地址
+
++ 接口返回数据格式
+```text
+必须要返回的字段
+
+data.list 为表格数据源
+data.count 为数据总条数
+```
+```php
+public function getList(){
+    $get_data = I("get.");
+    $page = $get_data['page']??1;
+    $per_page = $get_data['per_page']??20;
+
+    $map = [
+        // 筛选数据
+    ];
+    $model = D("User");
+
+    $count = $model->where($map)->count();
+    $data_list = $model->getListForPage($map, $page, $per_page);
+
+    $this->ajaxReturn(['status' => 1, "info" => '', 'data' => ['list' => $data_list, 'count' => $count]]);
+}
+```
++ 设置筛选项，与*带有筛选条件的表格*用法一致，可自由组合
+```text
+仅筛选项样式有效，筛选规则需要接口处理
+```
+
+```php
+$table_builder = new TableBuilder();
+$table_builder->addColumn(['title' => 'name', 'dataIndex' => 'name', 'sorter' => true]);
+$table_builder->addColumn(['title' => 'remark', 'dataIndex' => 'remark']);
+$table_builder->addColumn(['title' => 'status', 'dataIndex' => 'status']);
+$table_builder->addColumn(['title' => 'email', 'dataIndex' => 'email']);
+$table_builder->addColumn(['title' => 'tel', 'dataIndex' => 'tel']);
+$table_builder->addColumn(['title' => 'top', 'dataIndex' => 'top', 'filters' => [['text' => 'is_top', 'value' => '0'], ['text' => 'not top', 'value' => '1']]]);
+$table_builder->addColumn(['title' => 'work_date', 'dataIndex' => 'work_date']);
+
+$table_builder->setApiUrl(U('getList',['id' => 1], true, true));
+
+$table_builder->addDefSorter("status");
+
+$table_builder->addSelectFilter("key", "search", [["value"=>"name", "label"=>"name"],["value"=>"email", "label"=>"email"]]);
+$table_builder->addFuzzyFilter("word", "word");
+
+$table_builder->addFuzzyFilter("name", "name", true);
+$table_builder->addExactFilter("email", "email", true);
+$table_builder->addSelectFilter("status", "status", [["value"=>"value", "label"=>"label"]]	);
+$table_builder->addMultiSelectFilter("status_m", "status_m", [["value"=>"value", "label"=>"label"],["value"=>"value2", "label"=>"label2"],["value"=>"value3", "label"=>"label3"]]	);
+$table_builder->addDateFilter("work_date", "work_date",TableBuilder::FILTER_RULE_CALLBACK);
+$table_builder->addDateRangeFilter("work_date_range", "work_date_range", TableBuilder::FILTER_RULE_CALLBACK);
+```
 
 ### Collapse
 折叠卡

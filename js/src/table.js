@@ -4,11 +4,15 @@ import ReactDOM from "react-dom";
 import DefFilterParam from "./tableFilter/defFilterParam";
 import Filter from "./tableFilter/filter";
 
-function table(obj, opt, id=null, filter=null, sorter=null){
+function table(obj, opt, id=null, filter=null, sorter=null, apiUrl = null){
     const defaultOpt = { columns: [], data: []};
     Object.assign(defaultOpt, opt);
 
-    ReactDOM.render(<QsTable opt={opt} id = {id} filter = {filter} sorter = {sorter} />, obj);
+    if (apiUrl){
+        ReactDOM.render(<QsTableUseApi opt={opt} id = {id} filter = {filter} sorter = {sorter} apiUrl = {apiUrl} />, obj);
+    }else{
+        ReactDOM.render(<QsTable opt={opt} id = {id} filter = {filter} sorter = {sorter} />, obj);
+    }
 }
 
 function QsTable({opt, id=null, filter=null, sorter=null}){
@@ -127,6 +131,122 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
             { (filter && filter.length > 0) && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
             <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination} />
         </>
+}
+
+const objToQs = (obj)=>{
+    let query_arr = [];
+    Object.entries(obj).filter(item => !(item[1] === undefined || item[1] === null || item[1] === '')).forEach(item=>{
+        query_arr.push(item.join('='));
+    })
+
+    return query_arr.length > 0 ? query_arr.join("&") : "";
+};
+
+function QsTableUseApi({opt, id=null, filter=null, sorter=null, apiUrl = null}){
+    const [tableOpt, setTableOpt] = useState(opt);
+    const [loading, setLoading] = useState(false);
+    const [pagination, setPagination] = useState({
+        total: tableOpt.data?.length||0,
+        defaultPageSize: 10,
+        showQuickJumper: true,
+        current: 1,
+        pageSize: 10,
+    });
+
+    const [query, setQuery] = useState({pagination});
+
+    useEffect(()=>{
+        if (Array.isArray(sorter)){
+            const new_columns = tableOpt.columns.map((item) =>{
+                sorter.forEach(sorter_item => {
+                    if(sorter_item.name === item.dataIndex){
+                        item.sorter = true;
+                    }
+                });
+                return item;
+            });
+
+            let newTableOpt = tableOpt;
+            newTableOpt.columns = new_columns;
+            setTableOpt(newTableOpt);
+        }
+    }, []);
+
+    useEffect(()=>{
+        fetchData(query);
+    }, [query]);
+
+    const handleFilterData = (searchParam)=>{
+        let searchData = {};
+        Object.entries(searchParam).forEach((arr)=>{
+            searchData[arr[0]] = Array.isArray(arr[1]) ? arr[1].join(',') : arr[1];
+        });
+
+        let newPagination = pagination;
+        newPagination.current = 1;
+        setPagination({...newPagination});
+        searchData.pagination = newPagination;
+
+        let newQuery = Object.assign(query, searchData);
+        mergeAndFilterQuery(newQuery);
+    };
+
+    const getRandomUserParams = (params) => ({
+        page: params.pagination?.current,
+        per_page: params.pagination?.pageSize,
+        ...params,
+    });
+
+    const fetchData = (params = {}) => {
+        setLoading(true);
+        fetch(apiUrl+`?${objToQs(getRandomUserParams(params))}`)
+            .then((res) => res.json())
+            .then((results) => {
+                let newTableOpt = {};
+                Object.assign(newTableOpt, opt);
+                newTableOpt.data = results.data?.list||[];
+                setTableOpt({...newTableOpt});
+
+                let newPagination = params.pagination;
+                newPagination.total = results.data?.count;
+                setPagination({...newPagination});
+
+                setLoading(false);
+
+            });
+    };
+
+    const mergeAndFilterQuery = (params) => {
+        Object.entries(params).forEach((oneQueryArr)=>{
+            const key = oneQueryArr[0];
+            const val = oneQueryArr[1];
+            if (val){
+                query[key]=val;
+            }else if(query.hasOwnProperty(key)){
+                delete query.key;
+            }
+        });
+        setQuery({...query});
+    }
+
+    const handleTableChange = (newPagination, filters, sorter) => {
+        let params = {
+            sortField: sorter.field,
+            sortOrder: sorter.order,
+            pagination:newPagination,
+            ...filters,
+        };
+        let newQuery = Object.assign(query, params);
+        mergeAndFilterQuery(newQuery);
+    };
+
+    return <>
+        { (filter && filter.length > 0) && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
+        <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination}
+               loading={loading}
+               onChange={handleTableChange}
+        />
+    </>
 }
 
 window.QscmfAntd = window.QscmfAntd ? window.QscmfAntd : {};
