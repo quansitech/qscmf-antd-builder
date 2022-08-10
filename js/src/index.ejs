@@ -18,8 +18,14 @@
         <div id="divider_list">带有排序和筛选的Table</div>
         <div id="table_with_sort_and_filter"></div>
         <div id="descriptions"></div>
+        <div id="datepicker"></div>
+        <div id="rangepicker"></div>
         <script>
 
+                QscmfAntd.datepicker(document.getElementById('datepicker'), {});
+                QscmfAntd.datepicker(document.getElementById('rangepicker'), {type: 'RangePicker', onChange:function(dates, dateStrings){
+                    console.log(dates, dateStrings);
+                }});
                 QscmfAntd.divider(document.getElementById('root'), {});
                 QscmfAntd.divider(document.getElementById('left-divider'), {orientation:'left'});
                 QscmfAntd.divider(document.getElementById('right-divider'), {orientation:'right'});
@@ -218,6 +224,7 @@
                                 }
 
                 QscmfAntd.descriptions(document.getElementById('descriptions'), descriptionsOpt);
+
 
         </script>
     </body>

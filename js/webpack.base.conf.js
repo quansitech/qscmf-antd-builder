@@ -8,7 +8,8 @@ module.exports = {
         divider: './src/divider.js',
         table: './src/table.js',
         collapse: './src/collapse.js',
-        descriptions: './src/descriptions.js'
+        descriptions: './src/descriptions.js',
+        datepicker: './src/datepicker.js'
     },
     output: {
         filename: 'qa-builder-[name].js',
