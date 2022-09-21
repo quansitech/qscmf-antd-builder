@@ -48,6 +48,15 @@ class TableBuilder implements ConvertHtml{
     protected $sorter = [];
     protected $html = '';
     protected $api_url = '';
+    protected $pagination;
+
+    public function setPagination(bool $pagination):self{
+        if ($pagination === false){
+            $this->pagination = 'none';
+        }
+
+        return $this;
+    }
 
     public function addColumn($column){
         array_push($this->columns, $column);
@@ -237,7 +246,7 @@ class TableBuilder implements ConvertHtml{
     <define name="qa-builder-table" value="1" />
 </notdefined>
 <script>
-QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncodeFilter($this->filter)}, {$this->jsonEncode($this->sorter)}, '{$this->api_url}');
+QscmfAntd.table(document.getElementById('{$id}'), {$this->genOpt()}, '{$id}', {$this->jsonEncodeFilter($this->filter)}, {$this->jsonEncode($this->sorter)}, '{$this->api_url}', '{$this->pagination}');
 </script>
 template;
             $this->html = (string)((new View())->fetch('', $template));

@@ -407,6 +407,72 @@ $table_builder->addDateFilter("work_date", "work_date",TableBuilder::FILTER_RULE
 $table_builder->addDateRangeFilter("work_date_range", "work_date_range", TableBuilder::FILTER_RULE_CALLBACK);
 ```
 
+**自定义单元格属性**
+```text
+通过设置数据的 cellProperties 的值来自定义单元格的列、行的属性
+```
++ 表格拆分/合并
+  ```text
+  设置字段的 rowSpan colSpan值
+  当rowSpan/colSpan为0时，不渲染
+  ```
+  ```php
+  // 合并表头
+  $table_builder = new TableBuilder();
+  $table_builder->addColumn([ 'title' => '合同编号', 'dataIndex' => 'id']);
+  $table_builder->addColumn([ 'title' => '签约日期', 'dataIndex' => 'code', 'colSpan' => 2]);
+  // 此表头会被合并，不展示
+  $table_builder->addColumn([ 'title' => '项目名称', 'dataIndex' => 'name', 'colSpan' => 0]);
+
+  // 将id相同的数据合并展示，列出不同的name
+  $list_data = [
+    ['id' => 1, 'code' => '1', 'name' => 'name1_1', 'cellProperties' => ['id' => ['rowSpan' => 4], 'code' => ['rowSpan' => 4], 'name' => ['rowSpan' => 1]]],
+    ['id' => 1, 'code' => '1', 'name' => 'name1_2', 'cellProperties' => ['id' => ['rowSpan' => 0], 'code' => ['rowSpan' => 0], 'name' => ['rowSpan' => 1]]],
+    ['id' => 1, 'code' => '1', 'name' => 'name1_3', 'cellProperties' => ['id' => ['rowSpan' => 0], 'code' => ['rowSpan' => 0], 'name' => ['rowSpan' => 1]]],
+    ['id' => 1, 'code' => '1', 'name' => 'name1_4', 'cellProperties' => ['id' => ['rowSpan' => 0], 'code' => ['rowSpan' => 0], 'name' => ['rowSpan' => 1]]],
+    ['id' => 2, 'code' => '2', 'name' => 'name2_1', 'cellProperties' => ['id' => ['rowSpan' => 2], 'code' => ['rowSpan' => 2], 'name' => ['rowSpan' => 1]]],
+    ['id' => 2, 'code' => '2', 'name' => 'name2_2', 'cellProperties' => ['id' => ['rowSpan' => 0], 'code' => ['rowSpan' => 0], 'name' => ['rowSpan' => 1]]],
+    ['id' => 3, 'code' => '3', 'name' => 'name3_1', 'cellProperties' => ['id' => ['rowSpan' => 1], 'code' => ['rowSpan' => 1], 'name' => ['rowSpan' => 1]]],
+    ['id' => 4, 'code' => '4', 'name' => 'name4_1'],
+  ];
+  
+  foreach ($list_data as &$v){
+     $table_builder->addRow($v);
+  }
+  
+  echo $table_builder;
+  ```
++ 表格样式修改
+   ```text
+  设置字段的 className值
+   ```
+   ```php
+  $table_builder = new TableBuilder();
+  $table_builder->addColumn([ 'title' => '合同编号', 'dataIndex' => 'id']);
+  $table_builder->addColumn([ 'title' => '签约日期', 'dataIndex' => 'code']);
+
+  // 修改code的背景色
+  // 自定义样式类，如 bg-green {background-color:#bbe7c1;}
+  $list_data = [
+    ['id' => 1, 'code' => '1', 'name' => 'name1_1', 'cellProperties' => ['code' => ['className' => 'bg-green']]],
+  ];
+  
+  foreach ($list_data as &$v){
+     $table_builder->addRow($v);
+  }
+  
+  echo $table_builder;
+  ```
+
+**取消分页**
+```text
+远程加载数据的表格无效
+```
+```php
+$table_builder = new TableBuilder();
+$table_builder->setPagination(false);
+```
+
 ### Collapse
 
 折叠卡
