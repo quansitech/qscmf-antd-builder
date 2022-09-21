@@ -413,6 +413,7 @@ $table_builder->addDateRangeFilter("work_date_range", "work_date_range", TableBu
 ```
 + 表格拆分/合并
   ```text
+  设置字段的 rowSpan colSpan值
   当rowSpan/colSpan为0时，不渲染
   ```
   ```php
@@ -442,8 +443,10 @@ $table_builder->addDateRangeFilter("work_date_range", "work_date_range", TableBu
   echo $table_builder;
   ```
 + 表格样式修改
+   ```text
+  设置字段的 className值
+   ```
    ```php
-  // 合并表头
   $table_builder = new TableBuilder();
   $table_builder->addColumn([ 'title' => '合同编号', 'dataIndex' => 'id']);
   $table_builder->addColumn([ 'title' => '签约日期', 'dataIndex' => 'code']);
@@ -462,6 +465,9 @@ $table_builder->addDateRangeFilter("work_date_range", "work_date_range", TableBu
   ```
 
 **取消分页**
+```text
+远程加载数据的表格无效
+```
 ```php
 $table_builder = new TableBuilder();
 $table_builder->setPagination(false);
