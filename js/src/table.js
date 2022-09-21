@@ -4,18 +4,31 @@ import ReactDOM from "react-dom";
 import DefFilterParam from "./tableFilter/defFilterParam";
 import Filter from "./tableFilter/filter";
 
-function table(obj, opt, id=null, filter=null, sorter=null, apiUrl = null){
+function table(obj, opt, id=null, filter=null, sorter=null, apiUrl = null, pagination = null){
     const defaultOpt = { columns: [], data: []};
+    const shareOnCell = (dataIndex)=>{
+        return (record,index)=>{
+            let cellObj = {};
+            if (record.hasOwnProperty("cellProperties") && record.cellProperties.hasOwnProperty(dataIndex)){
+                cellObj = record.cellProperties[dataIndex];
+            }
+
+            return cellObj;
+        }
+    }
     Object.assign(defaultOpt, opt);
+    for (let  key in defaultOpt.columns){
+        defaultOpt.columns[key].onCell = shareOnCell(defaultOpt.columns[key].dataIndex);
+    }
 
     if (apiUrl){
         ReactDOM.render(<QsTableUseApi opt={opt} id = {id} filter = {filter} sorter = {sorter} apiUrl = {apiUrl} />, obj);
     }else{
-        ReactDOM.render(<QsTable opt={opt} id = {id} filter = {filter} sorter = {sorter} />, obj);
+        ReactDOM.render(<QsTable opt={opt} id = {id} filter = {filter} sorter = {sorter} cusPagination = {pagination} />, obj);
     }
 }
 
-function QsTable({opt, id=null, filter=null, sorter=null}){
+function QsTable({opt, id=null, filter=null, sorter=null, cusPagination=null}){
     const [tableOpt, setTableOpt] = useState(opt);
 
     useEffect(()=>{
@@ -43,12 +56,12 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
         }
     }, []);
 
-    const pagination = {
+    const pagination = handlePaginate( cusPagination,{
         total: tableOpt.data.length,
         hideOnSinglePage: true,
         defaultPageSize: 10,
         showQuickJumper: true
-    };
+    });
 
     const filterPerRecord = (value, record, filterOpt, searchData)=>{
         let flag = true ;
@@ -131,6 +144,13 @@ function QsTable({opt, id=null, filter=null, sorter=null}){
             { (filter && filter.length > 0) && <Filter filter={filter} id={id} onFinished = { handleFilterData } />}
             <Table columns={tableOpt.columns} dataSource={ tableOpt.data } size="small" pagination={pagination} />
         </>
+}
+
+const handlePaginate = (cusPagination, defPaginate) => {
+    if(cusPagination === 'none'){
+        return false;
+    }
+    return defPaginate;
 }
 
 const objToQs = (obj)=>{
