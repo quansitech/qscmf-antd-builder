@@ -9,8 +9,8 @@ function table(obj, opt, id=null, filter=null, sorter=null, apiUrl = null, pagin
     const shareOnCell = (dataIndex)=>{
         return (record,index)=>{
             let cellObj = {};
-            if (record.hasOwnProperty("cellProperties") && record.cellProperties.hasOwnProperty(dataIndex)){
-                cellObj = record.cellProperties[dataIndex];
+            if (record.hasOwnProperty("_cellProperties") && record._cellProperties.hasOwnProperty(dataIndex)){
+                cellObj = record._cellProperties[dataIndex];
             }
 
             return cellObj;
